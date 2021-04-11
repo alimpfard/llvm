@@ -28,7 +28,8 @@ static void appendToGlobalArray(const char *Array, Module &M, Function *F,
   // to the list.
   SmallVector<Constant *, 16> CurrentCtors;
   StructType *EltTy = StructType::get(
-      IRB.getInt32Ty(), PointerType::getUnqual(FnTy), IRB.getInt8PtrTy());
+      IRB.getInt32Ty(), PointerType::get(FnTy, M.getDataLayout().getProgramAddressSpace()),
+      IRB.getInt8PtrTy());
   if (GlobalVariable *GVCtor = M.getNamedGlobal(Array)) {
     if (Constant *Init = GVCtor->getInitializer()) {
       unsigned n = Init->getNumOperands();
